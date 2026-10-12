@@ -12,7 +12,7 @@ const validSubjects = {
     "Geography",
     "ICT",
     "Health",
-    "Commerce",
+    "Civic",
     "PTS",
     "Library",
     "Sports",
