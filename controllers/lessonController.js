@@ -44,8 +44,7 @@ const generateTodayRecord = async (req, res) => {
 
         const today = dayjs();
         const date = today.startOf("day").toDate();
-        // const day = today.format("dddd");
-        const day = "Monday"; // Testing only
+        const day = today.format("dddd");
 
         
 
@@ -175,11 +174,10 @@ const getTodayRecord = async (req, res) => {
         });
     }
 
-// const day = new Date().toLocaleDateString("en-US", {
-//   weekday: "long",
-// });
+const day = new Date().toLocaleDateString("en-US", {
+  weekday: "long",
+});
 
-const day = "Monday"; // Testing only
 
 const periods = timetable[day].map((period) => {
 
