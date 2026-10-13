@@ -3,6 +3,8 @@ const LessonRecord = require("../models/LessonRecord");
 const User = require("../models/User");
 const { generateLessonReport } = require("../utils/pdfGenerator");
 const dayjs = require("dayjs");
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(utc);
 
 // Dashboard
 const getDashboard = async (req, res) => {
@@ -18,7 +20,7 @@ const getDashboard = async (req, res) => {
             isActive: true
         });
 
-        const today = dayjs().startOf("day").toDate();
+        const today = dayjs.utc().startOf("day").toDate();
 
         const submittedToday = await LessonRecord.countDocuments({
             date: today
@@ -55,7 +57,7 @@ const getLessonByClassAndDate = async (req, res) => {
 
         const record = await LessonRecord.findOne({
             classId,
-            date: dayjs(date).startOf("day").toDate()
+            date: dayjs.utc(date).startOf("day").toDate()
         }).populate("classId");
 
         if (!record) {
@@ -89,7 +91,7 @@ const getPendingClasses = async (req, res) => {
 
     try {
 
-        const today = dayjs().startOf("day").toDate();
+        const today = dayjs.utc().startOf("day").toDate();
 
         const records = await LessonRecord.find({
             date: today
@@ -149,11 +151,10 @@ const exportLessonPDF = async (req, res) => {
 const getTodayOverview = async (req, res) => {
   try {
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const date = dayjs.utc().startOf("day").toDate();
 
     const records = await LessonRecord.find({
-      date: today,
+      date,
     }).populate("classId");
 
     const result = records.map((record) => ({

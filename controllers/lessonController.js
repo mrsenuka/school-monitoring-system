@@ -1,4 +1,6 @@
 const dayjs = require("dayjs");
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(utc);
 
 const LessonRecord = require("../models/LessonRecord");
 const Timetable = require("../models/Timetable");
@@ -42,7 +44,7 @@ const generateTodayRecord = async (req, res) => {
             });
         }
 
-        const today = dayjs();
+        const today = dayjs.utc();
         const date = today.startOf("day").toDate();
         const day = today.format("dddd");
 
@@ -149,7 +151,7 @@ const getTodayRecord = async (req, res) => {
 
         const teacher = await User.findById(req.user._id);
 
-        const date = dayjs().startOf("day").toDate();
+        const date = dayjs.utc().startOf("day").toDate();
 
         const record = await LessonRecord.findOne({
             classId: teacher.classId,
@@ -174,9 +176,7 @@ const getTodayRecord = async (req, res) => {
         });
     }
 
-const day = new Date().toLocaleDateString("en-US", {
-  weekday: "long",
-});
+const day = dayjs.utc().format("dddd");
 
 
 const periods = timetable[day].map((period) => {
@@ -255,7 +255,7 @@ const updatePeriodStatus = async (req, res) => {
 
     const teacher = await User.findById(req.user._id);
 
-    const date = dayjs().startOf("day").toDate();
+    const date = dayjs.utc().startOf("day").toDate();
 
     const record = await LessonRecord.findOne({
       classId: teacher.classId,
