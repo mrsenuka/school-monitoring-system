@@ -128,7 +128,7 @@ const exportLessonPDF = async (req, res) => {
 
     const lesson = await LessonRecord.findOne({
       classId,
-      date,
+      date: dayjs.utc(date).startOf("day").toDate(),
     }).populate("classId");
 
     if (!lesson) {
